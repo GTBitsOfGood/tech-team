@@ -14,15 +14,26 @@ This tutorial will take you through how to set up a new repo with the boilerplat
 We will be using Facebook's [Create React App](cra) to help us set up the frontend of our application.
 
 1. Navigate to the root of your project repository.
-2. Run Create React App to create your frontend boilerplate
+
+2. Run `Create React App` to create your frontend boilerplate.
+This will automatically download all the code and dependencies that the React App needs.
+It may take a minute!
 
     ```sh
     npx create-react-app client
+    ```
+    
+3. Now you have a `client` folder with all the code for the boilerplate React App.
+Change directory to the React App you just created:
+
+    ```sh
     cd client
-    npm start
     ```
 
-3. Open `client/package.json` and add the folowing line before the dependencies: `"proxy": "http://localhost:3001/",`. Your  `client/package.json` should look like this:
+4. For compatibility with the backend, you need to make the following change.
+Don't worry too much about what it actually does, we will explain this in the future.
+Open `client/package.json` and add the following line before the dependencies: `"proxy": "http://localhost:3001/",`. 
+Your  `client/package.json` should look something like this (it may have extra fields at the bottom):
 
    ```json
    {
@@ -43,28 +54,58 @@ We will be using Facebook's [Create React App](cra) to help us set up the fronte
     }
    }
    ```
+   
+5. Now we will actually run the React App so you can see the website.
+Start it with the following command:
 
-4. Open [http://localhost:3000/](localhost) to see your app.
-
+   ```sh
+   npm start
+   ```
+   
+   Now open http://localhost:3000/ in your web browser to see your (simple) web app!
 
 ## Express Boilerplate
 
 We will be using the [Express Generator](ex-gen) to quickly create our server skeleton.
 
-1. In your terminal navigate back to the root of your project respository.
-2. Use NPM to install the `express-generator` package globally on your machine
+1. In your terminal navigate back to the root of your project repository:
 
-   ```sh 
-   npm install express-generator -g 
-   ```
+    ```sh
+    cd ..
+    ```
 
-3. Use Express Generator to create your backend boilerplate
+2. Use NPM to install the `express-generator` package _globally_ on your machine.
+
+    **Note:** Global install requires **admin** or **sudo** access.
+
+    **Mac / Linux / UNIX:** Just run the following command:
+    ```sh 
+    sudo npm install express-generator -g 
+    ```
+   
+    **Windows:** You need to run your Command Prompt or PowerShell in administrator mode.
+    See [this StackOverflow Post](https://superuser.com/questions/968214/open-cmd-as-admin-with-windowsr-shortcut) for help, or ask one of the instructors!
+    Then run this command:
+    ```sh 
+    npm install express-generator -g 
+    ```
+
+3. Use `Express Generator` to create your backend boilerplate.
+This is similar to how we used `Create React App` to make the frontend boilerplate.
+It will automatically download the code needed for the backend:
 
    ```sh 
    express --git --no-view server
+   ```
+   
+4. You should now see a `server` folder, which has your backend code.
+Unlike `Create React App`, `Express Generator` only downloaded the code.
+It did not install all the dependencies, so we have to do that manually!
+Navigate into the `server` folder, then install all the dependencies:
+
+    ```sh
    cd server
    npm install
-   npm install --dev nodemon dotenv-cli
    ```
 
 4. We will also use `nodemon` and `dotenv-cli` to make our workflow a bit nicer.
@@ -73,7 +114,10 @@ We will be using the [Express Generator](ex-gen) to quickly create our server sk
    npm install --dev nodemon dotenv-cli
    ```
 
-5. Open the `server/package.json` where we will add a new script `dev`. This script will automatically load our environemnt variables and run our project with `nodemon` to enable hot reloading the server code. Change the `scripts` to read as follows: 
+5. Open the `server/package.json` where we will add a new script `dev`. 
+This script will automatically load our environment variables and run our project with `nodemon` to enable **hot reloading** the server code.
+**Hot reloading** allows you to make changes to the code and view them in the browser without having to re-run the code (unlike Java or Python)! 
+Change the `scripts` in `server/package.json` to read as follows: 
 
     ```json
     "scripts": {
@@ -82,7 +126,9 @@ We will be using the [Express Generator](ex-gen) to quickly create our server sk
     },
     ```
 
-6. Create `.env` file in the server directory (i.e. `server/.env`). This is where you will put your environment variables. `dotenv-cli` will automatically load environment variables from `server/.env` when you run the `npm run dev` command.
+6. Create an empty `.env` file in the server directory (i.e. `server/.env`). 
+This is where you will put your environment variables. 
+`dotenv-cli` will automatically load environment variables from `server/.env` when you run the `npm run dev` command.
 
 7. Now we need to dive into the `server/app.js` code and set it up so that Express renders our react application properly. 
 
@@ -92,9 +138,11 @@ We will be using the [Express Generator](ex-gen) to quickly create our server sk
     app.use(express.static(path.join(__dirname, 'public')));
     ```
 
-    We want to remove this code as this is telling Express to serve static resources from the `server/public` directory which is not what we want since we're using React for our frontend. At this point you can also completely remove the `server/public` directory as you won't need it if you rely purely on React for your frontent.
+    We want to remove this code as this is telling Express to serve static resources from the `server/public` directory, which is not what we want since we're using React for our frontend. 
+    At this point you can also completely remove the `server/public` directory as you won't need it if you rely purely on React for your frontend.
 
-    Now we want to re-add the `express.static(...)` statement in the right place to ensure our app works. At the very bottom of your file, right before  `module.exports = app;`, add the following code:
+    Now we want to re-add the `express.static(...)` statement in the right place to ensure our app works. 
+    At the very bottom of your file, right before  `module.exports = app;`, add the following code:
 
     ```javascript
     // Render React page
@@ -104,7 +152,10 @@ We will be using the [Express Generator](ex-gen) to quickly create our server sk
     });
     ```
 
-    This chunk of code will serve static resources out of the `../client/build` folder. If you didn't use the name `client` in the Create React App part of this tutorial, you'll have to update the name here, too. It's vital that `app.get('/*', ...)` goes as the end of the file before the `module.exports` because this is a wildcard route that will match with any URL that didn't match with your API routes. If you put this higher up, your API routes will not work.
+    This chunk of code will serve static resources out of the `../client/build` folder. 
+    If you did not use the name `client` in the Create React App part of this tutorial, you'll have to update the name here, too. 
+    It's vital that `app.get('/*', ...)` goes as the end of the file before the `module.exports` because this is a wildcard route that will match with any URL that did not match with your API routes. 
+    If you put this higher up, your API routes will not work.
 
     Changing the `express.static(...)` directory will cause a problem with the express-generator boilerplate in the `server/routes/index.js` file on line 6: 
 
@@ -112,14 +163,14 @@ We will be using the [Express Generator](ex-gen) to quickly create our server sk
     res.render('index', { title: 'Express' });
     ```
 
-    To fix this bug simply change the line to read:
+    To fix this bug, simply change the line to read:
     ```javascript
     res.send('this is an API route');
     ```
 
 ## Putting Everything Together
 
-Congrats! You've made it throught most of the work so far! Now we just need to do a little more work to set up our repo to be deployed to Heroku.
+Congrats! You've made it through most of the work so far! Now we just need to do a little more work to set up our repo to be deployed to Heroku.
 
 1. Navigate to the root of your project repository. 
 2. Create an empty `package.json` file in the root of your directory. If you've followed along correctly you shouldn't have one here yet -- there should be one at `client/package.json` and another at `server/package.json`. The `package.json` in the root of the repository will be used so that Heroku knows how to properly build and run our app in production.

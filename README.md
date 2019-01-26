@@ -2,4 +2,4 @@
 
 ## Guides
 
-* [How to set up MERN Boilerplate and connect to Heroku](./boilerplate.md)
+* [How to set up MERN Boilerplate and connect to Heroku](boilerplate/boilerplate.md)
