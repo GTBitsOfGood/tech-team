@@ -161,7 +161,7 @@ Congrats! You've made it throught most of the work so far! Now we just need to d
 6. Now that we've committed our changes, we create a Heroku 'app' and deploy our code.
 
     ```sh
-      heroku create your-projcet-name
+      heroku create your-project-name
       git push heroku master
     ```
 
