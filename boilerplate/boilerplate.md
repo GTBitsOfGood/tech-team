@@ -185,10 +185,10 @@ Congrats! You've made it through most of the work so far! Now we just need to do
      "cacheDirectories": ["client/node_modules", "server/node_modules"],
      "scripts": {
        "start": "cd server/ && npm start",
-       "install-frontend": "npm install --prefix frontend",
-       "install-backend": "npm install --prefix backend",
-       "build-frontend": "cd frontend/ && npm build",
-       "postinstall": "npm run install-frontend && npm run install-backend && npm run build-frontend"
+       "install-client": "npm install --prefix client",
+       "install-server": "npm install --prefix server",
+       "build-client": "cd client/ && npm build",
+       "postinstall": "npm run install-client && npm run install-server && npm run build-client"
      },
      "engines": {
        "npm": "THE VERSION OF NPM YOU ARE RUNNING",
